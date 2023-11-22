@@ -7,6 +7,7 @@ import { BrandService } from '../services/brand.service';
   templateUrl: './brand.component.html',
   styleUrls: ['./brand.component.css']
 })
+
 export class BrandComponent {
   brands:Brand[]=[];
   dataLoaded = false;
