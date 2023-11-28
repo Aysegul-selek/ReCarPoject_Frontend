@@ -12,12 +12,12 @@ export class RentalComponent {
   dataLoaded = false;
   constructor(private rentalService : RentalService) {}
   ngOnInit(): void {
-    this.getRentals();
+    //this.getRentals();
   }
-  getRentals() {
-    this.rentalService.getRentals().subscribe((response) => {
-      this.rentals = response.data;
-      this.dataLoaded=true;
-    });
-  }
+  // getRentals() {
+  //   this.rentalService.getRentals().subscribe((response) => {
+  //     this.rentals = response.data;
+  //     this.dataLoaded=true;
+  //   });
+  // }
 }

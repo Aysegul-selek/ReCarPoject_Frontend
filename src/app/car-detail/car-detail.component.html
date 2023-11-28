@@ -1,0 +1,59 @@
+
+<div class="container" *ngFor="let carDetail of carDetails">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card cardsize">
+          <div class="card-body">
+            <h4 class="card-title text-center">
+              {{ carDetail.brandName | uppercase }}
+              {{ carDetail.carName }}
+            </h4>
+          </div>
+          <ul class="list-group list-group-flush text-center">
+            <li class="list-group-item">
+              <i><b>Model Yılı</b></i> | {{ carDetail.modelYear }}
+            </li>
+            <li class="list-group-item">
+              <i><b>Renk</b></i> | {{ carDetail.colorName }}
+            </li>
+            <li class="list-group-item">
+              <i><b>Detaylar</b></i> | {{ carDetail.carName }}
+            </li>
+            <li class="list-group-item">
+              <i><b>Günlük Fiyat</b></i> |
+              {{ carDetail.dailyPrice   }}
+            </li>
+            <li class="list-group-item">
+              <i><b>Aylık Fiyat %20 indirimli</b></i>
+              {{carDetail.dailyPrice * 30 * 0.8  }}
+            </li>
+          </ul>
+          <div class="form-group">
+            <label for="rentDate">Kiralama Tarihi:</label>
+            <input type="date" class="form-control"  name="rentDate" />
+          </div>
+          <div class="form-group">
+            <label for="returnDate">Dönüş Tarihi:</label>
+            <input type="date" class="form-control"  name="returnDate" />
+          </div>
+          <br>
+          <button type="button" class="btn btn-success" routerLink="/cars/payment">
+            Aracı Şimdi Kirala
+          </button>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div>
+          <h1>Car Images</h1>
+          <div *ngIf="currentImage !== ''">
+            <img [src]="currentImage" alt="Car Image" class="d-block w-100">
+          </div>
+          <div *ngIf="currentImage === ''">
+            <p>No images available</p>
+          </div>
+        </div>
+     
+      </div>
+    </div>
+  </div>
+  

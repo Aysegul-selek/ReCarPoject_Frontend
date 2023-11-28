@@ -11,7 +11,7 @@ import { BrandService } from '../services/brand.service';
 export class BrandComponent {
   brands:Brand[]=[];
   dataLoaded = false;
-  currentBrand:Brand | undefined;
+  currentBrand:Brand ;
 constructor(private brandService: BrandService) {}
   ngOnInit(): void {
     this.getBrands();
@@ -25,7 +25,7 @@ constructor(private brandService: BrandService) {}
   setCurrentBrand(brand: Brand) {
     this.currentBrand=brand;
   }
-  getCurrentClass(brand:Brand){
+  getCurrentBrandClass(brand:Brand){
     if(brand==this.currentBrand){
       return "list-group-item active"
     }
@@ -41,4 +41,5 @@ constructor(private brandService: BrandService) {}
       return"list-group-item "
     }
   }
+  clearCurrentBrand(){ this.currentBrand = null }
 }

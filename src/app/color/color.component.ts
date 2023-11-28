@@ -8,16 +8,32 @@ import { ColorService } from '../services/color.service';
   styleUrls: ['./color.component.css']
 })
 export class ColorComponent {
-colors:Color[]=[];
-dataLoaded = false;
-constructor(private colorService: ColorService) {}
-ngOnInit(): void {
-  this.getColors();
-}
-getColors() {
-  this.colorService.getColors().subscribe((response) => {
-    this.colors = response.data;
-    this.dataLoaded=true;
-  });
-}
+  colors: Color[] = [];
+  dataLoaded = false;
+  currentColor: Color | null = null;
+  filterText: string = '';
+
+  constructor(private colorService: ColorService) { }
+
+  ngOnInit(): void {
+    this.getColors();
+  }
+
+  getColors() {
+    this.colorService.getColors().subscribe((response) => {
+      this.colors = response.data;
+      this.dataLoaded = true;
+    });
+  }
+
+  setCurrentColor(color: Color) {
+    this.currentColor = color;
+  }
+
+  getCurrentColor(color: Color) {
+    if (color == this.currentColor) {
+      return 'list-group-item active';
+    } else return 'list-group-item';
+  }
+
 }

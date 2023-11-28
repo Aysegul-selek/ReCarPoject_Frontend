@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Car } from '../models/car';
 import { CarService } from '../services/car.service';
+import { CarDetail } from '../models/car-detail';
+import { ActivatedRoute } from '@angular/router';
+import { CarDetailService } from '../services/car-detail.service';
 
 @Component({
   selector: 'app-car',
@@ -10,14 +13,63 @@ import { CarService } from '../services/car.service';
 export class CarComponent {
   cars: Car[] = [];
   dataLoaded = false;
-  constructor(private carService: CarService) {}
+  currentCar: Car | null = null;
+  filterText: string = '';
+
+  constructor(
+    private carService: CarService,
+    private activatedRoute: ActivatedRoute
+  ) { }
+
   ngOnInit(): void {
-    this.getCars();
+    this.activatedRoute.params.subscribe((params) => {
+      if (params['brandId']) {
+        this.getCarsByBrandId(params['brandId']);
+      } else if (params['colorId']) {
+        this.getCarsByColorId(params['colorId']);
+      } else if (params['carId']) {
+        this.getCarsById(params['carId']);
+      } else {
+        this.getCars();
+      }
+    });
   }
+
   getCars() {
     this.carService.getCars().subscribe((response) => {
       this.cars = response.data;
-      this.dataLoaded=true;
+      this.dataLoaded = true;
     });
+  }
+
+  getCarsById(carId: number) {
+    this.carService.getCarsById(carId).subscribe((response) => {
+      this.cars = response.data;
+      this.dataLoaded = true;
+    });
+  }
+
+  getCarsByBrandId(brandId: number) {
+    this.carService.getCarsByBrands(brandId).subscribe((response) => {
+      this.cars = response.data;
+      this.dataLoaded = true;
+    });
+  }
+
+  getCarsByColorId(colorId: number) {
+    this.carService.getCarsByColorId(colorId).subscribe((response) => {
+      this.cars = response.data;
+      this.dataLoaded = true;
+    });
+  }
+
+  setCurrentCar(car: Car) {
+    this.currentCar = car;
+  }
+
+  getCurrentCar(car: Car) {
+    if (car == this.currentCar) {
+      return 'list-group-item active';
+    } else return 'list-group-item';
   }
 }
