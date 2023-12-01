@@ -1,20 +1,50 @@
-<div *ngIf="dataLoaded == false" class="spinner-border text-primary" role="status">
-  <span class="visually-hidden">Loading...</span>
+<div class="row">
+<div class="col-sm-3">
+  <div class="mb-3">
+    <label for="filterText" class="form-label">Ürün Ara</label>
+    <input type="text" [(ngModel)]="filterText" class="form-control" id="filterText" placeholder="Arama İfadesi giriniz">
+  </div>
+  <div *ngIf="filterText.length>2" class="alert alert-success">
+  {{filterText}} aradınız.
+  </div>
 </div>
+<div class="col-sm-3"><label >Marka seçiniz</label>
+  <select class="form-select" aria-label="Default select example" [(ngModel)]="filterBrand">
+    <option *ngFor="let brand of brands" [value]="brand.brandId">{{brand.brandName}}</option>   
+  </select></div>
+<div class="col-sm-3">
+  <label >Renk seçiniz</label>
+  <select class="form-select" aria-label="Default select example" [(ngModel)]="filterColor">
+    <option *ngFor="let color of colors"  [value]="color.colorId">{{color.colorName}}</option>
+  </select>
+ </div>
+ <div class="col-sm-3"> <button (click)="getCarsByBrandAndColor(filterBrand,filterColor)" type="button" class="btn btn-secondary mt-2">Filtrele</button>
 
-
-<div class="container">
-  <div class="p-3 mb-2 bg-success text-white">Araba Listesi</div>
-
-
-  <br>
-  <ul class="list-group">
-    <li *ngFor="let car of cars " class="list-group-item" [class]="getCurrentCar(car)"
-      (click)="setCurrentCar(car)" >
-      <h4>{{ car.description }}</h4>
-      <p>Model Yılı: {{ car.modelYear }}</p>
-      <p>Günlük Ücret: {{ car.dailyPrice }} TL</p>
-      <a routerLink="/cars//car/{{car.carId}}" class="buton float-end text-center">Detaylı Görüntüle</a>
-    </li>
-  </ul>
+    {{filterBrand}} ve {{filterColor}} seçtiniz
+ </div>
+</div>
+<div class="row row-cols-1 row-cols-md-2 g-4" style="margin-top: 10px; margin-bottom: 10px;">
+  <div class="col" *ngFor="let car of carDetails | filterCar:filterText">
+    <div class="card">
+      <img  *ngIf="car.file" style="height: 330px;"  [src]="baseUrl+car.file" class="card-img-top"  />
+      <img
+      *ngIf="!car.file"
+      src="/assets/null.jpg"
+      class="card-img-top"
+      style="object-fit: cover"
+      width="100"
+      height="50%"
+    />
+      <div class="card-body">
+        <h5 class="card-title">{{car.brandName}} - {{car.colorName}}</h5>
+        <p class="card-text">
+          {{car.description}}
+        </p>
+      </div>
+      <div class="card-footer d-flex justify-content-between align-items-center">
+        <small class="fw-bold text-start">{{car.dailyPrice}} TL / Günlük</small>
+        <a routerLink="/cars/car/{{car.carId}}" class="buton float-end text-center">Detaylı Görüntüle</a>
+      </div>
+    </div>
+  </div>
 </div>

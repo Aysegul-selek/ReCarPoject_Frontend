@@ -11,6 +11,7 @@ import { BrandService } from '../services/brand.service';
 export class BrandComponent {
   brands:Brand[]=[];
   dataLoaded = false;
+  filterText="";
   currentBrand:Brand ;
 constructor(private brandService: BrandService) {}
   ngOnInit(): void {

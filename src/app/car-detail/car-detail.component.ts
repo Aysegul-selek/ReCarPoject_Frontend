@@ -6,6 +6,10 @@ import { CarService } from '../services/car.service';
 import { CarDetailService } from '../services/car-detail.service';
 import { ActivatedRoute } from '@angular/router';
 import { CarImageService } from '../services/car-image.service';
+import { RentalService } from '../services/rental.service';
+import { ToastrService } from 'ngx-toastr';
+import { CartServiceService } from '../services/cart-service.service';
+import { Rental } from '../models/rental';
 
 @Component({
   selector: 'app-car-detail',
@@ -13,6 +17,7 @@ import { CarImageService } from '../services/car-image.service';
   styleUrls: ['./car-detail.component.css']
 })
 export class CarDetailComponent {
+  [x: string]: any;
   imageUrl = 'https://localhost:44324/uploads/images/';
   cars:Car[]=[];
   carDetails: CarDetail[]=[];
@@ -20,9 +25,17 @@ export class CarDetailComponent {
   image:CarImageDetail[];
   currentImage: any;
   currentIndex: number = 0;
-
-  constructor(private carService: CarService, private activatedRoute: ActivatedRoute,private carImageService:CarImageService,
-    private carDetailService:CarDetailService ) {
+  filterText="";
+  rentalMessage: string = '';
+  rentDate : Date | null = null;
+  returnDate : Date | null = null;
+  constructor(private carService: CarService,
+     private activatedRoute: ActivatedRoute,
+     private carImageService:CarImageService,
+    private carDetailService:CarDetailService,
+    private rentalSerivce:RentalService,
+    private cartService:CartServiceService,
+    private toastrService:ToastrService) {
   }
 
   getCarsById(carId: number) {
@@ -37,6 +50,7 @@ export class CarDetailComponent {
       if (params["carId"]) {
         this.getCarsById(params["carId"])
         this.getImageByCar(params["carId"])
+        
       }
     })
   }
@@ -84,6 +98,21 @@ export class CarDetailComponent {
     else if (this.currentIndex - 1 < 0)
       this.currentIndex = this.images.length - 1;
     this.currentImage = this.images[this.currentIndex]
+  }
+
+  addToCart(carDetail:CarDetail){
+
+    if(carDetail.carId===1){
+      this.toastrService.error("Araç sepete eklenemedi", "Araç başkası tarafından kiralanmış durumda",{
+        progressBar:true
+      })
+    }else{
+   
+      this.cartService.addTocart(carDetail);
+      this.toastrService.success("Araç sepete eklendi",carDetail.brandName+" "+carDetail.carName,{
+        progressBar:true
+      })
+    }
   }
 
   

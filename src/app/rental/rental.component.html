@@ -1,21 +1,57 @@
-<div *ngIf="dataLoaded==false" class="spinner-border text-success" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
 <table class="table">
     <thead>
-        <th>ID</th>
-        <th>Car Id</th>
-        <th>CustomerID </th>
-        <th>RentDate </th>
-        <th>ReturnDate </th>
-     
+      <tr>
+        <th></th>
+        <th>Marka</th>
+        <th>Model</th>
+        <th>Açıklama</th>
+        <th>Toplam tutar</th>
+        <th></th>
+      </tr>
     </thead>
-    
-    <tr *ngFor="let rental of rentals">
-        <td>{{rental.rentalId}}</td>
-        <td>{{rental.carId}}</td>
-        <td>{{rental.customerId}}</td>
-        <td>{{rental.rentDate}}</td>
-        <td>{{rental.returnDate}}</td>
+    <tr *ngFor="let cartItem of cartItems">
+      <td> <div>
+        <h1>Car Images</h1>
+        <div *ngIf="currentImage !== ''">
+          <img [src]="currentImage" alt="Car Image" class="d-block w-100">
+        </div>
+        <div *ngIf="currentImage === ''">
+          <p>No images available</p>
+        </div>
+      </div></td>
+      <td>{{cartItem.carDetail.brandName}}</td>
+      <td>{{cartItem.carDetail.carName}}</td>
+      <td>{{cartItem.carDetail.description}}</td>
+      <td>{{cartItem.totalamount | currency: "TRY":"₺":"4.2-2"}}</td>
+      <td><button (click)="removeFromCart(cartItem.carDetail)" type="button" class="btn btn-danger btn-sm">Sepetten sil</button><i class="bi bi-trash3-fill"></i></td>
     </tr>
-</table>
+  </table>
+  
+  <div class="card-body">
+    <h5 class="card-title">Sipariş Özeti</h5>
+    <p class="card-text">
+    <ul class="list-group">
+        <li class="list-group-item border border-light">
+            <small>
+                <span class="float-start">Toplam kiralanan araç sayısı:</span>
+                <span class="float-end"><strong>{{cartItems.length}} araç</strong></span>
+            </small>
+        </li>
+        <li *ngFor="let cartItem of cartItems" class="list-group-item border border-light">
+            <small>
+                <span class="float-start">Ödenecek tutar: </span>
+            </small>
+            <span class="float-end text-danger">
+                <strong>{{cartItem.carDetail.dailyPrice}}₺</strong>
+            </span>
+        </li>
+        <li class="list-group border border-light"><br>
+          <span class="d-flex flex-column float-end">
+              <a
+              routerLink="/payment"
+              (click)="gotopay()"
+              class="btn btn-success">Sepeti Onayla</a>
+          </span>
+      </li>
+    </ul>
+  </div>

@@ -1,45 +1,42 @@
 
-<div class="container" *ngFor="let carDetail of carDetails">
+<div class="container" *ngFor="let car of carDetails | filterCar:filterText">
     <div class="row">
       <div class="col-md-3">
         <div class="card cardsize">
           <div class="card-body">
             <h4 class="card-title text-center">
-              {{ carDetail.brandName | uppercase }}
-              {{ carDetail.carName }}
+              {{ car.brandName  }}
+              {{ car.carName }}
             </h4>
           </div>
           <ul class="list-group list-group-flush text-center">
             <li class="list-group-item">
-              <i><b>Model Yılı</b></i> | {{ carDetail.modelYear }}
+              <i><b>Model Yılı</b></i> | {{ car.modelYear }}
             </li>
             <li class="list-group-item">
-              <i><b>Renk</b></i> | {{ carDetail.colorName }}
+              <i><b>Renk</b></i> | {{ car.colorName }}
             </li>
             <li class="list-group-item">
-              <i><b>Detaylar</b></i> | {{ carDetail.carName }}
+              <i><b>Detaylar</b></i> | {{ car.carName }}
             </li>
             <li class="list-group-item">
               <i><b>Günlük Fiyat</b></i> |
-              {{ carDetail.dailyPrice   }}
+              {{ car.dailyPrice   }}
             </li>
             <li class="list-group-item">
               <i><b>Aylık Fiyat %20 indirimli</b></i>
-              {{carDetail.dailyPrice * 30 * 0.8  }}
+              {{car.dailyPrice * 30 * 0.8  }}
             </li>
           </ul>
-          <div class="form-group">
-            <label for="rentDate">Kiralama Tarihi:</label>
-            <input type="date" class="form-control"  name="rentDate" />
-          </div>
-          <div class="form-group">
-            <label for="returnDate">Dönüş Tarihi:</label>
-            <input type="date" class="form-control"  name="returnDate" />
-          </div>
-          <br>
-          <button type="button" class="btn btn-success" routerLink="/cars/payment">
-            Aracı Şimdi Kirala
-          </button>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card" >
+                <button routerLink="/rentals/car/{{car.carId}}" (click)="addToCart(car)" type="button" class="btn btn-success btn-lg">Kirala</button>
+              </div>
+              
+            </div>
+     
+          </div>         
         </div>
       </div>
       <div class="col-md-9">
